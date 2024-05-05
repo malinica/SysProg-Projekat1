@@ -16,7 +16,7 @@ namespace Projekat1
             _kes = new Dictionary<string, Stavka>(kesKapacitet);
         }
 
-        public void DodajUKes(string key, int ukupno1,string podaci1, int timeout)
+        public void DodajUKes(string key, int ukupno1, string podaci1, int timeout)
         {
             if (!_kesLock.TryEnterWriteLock(timeout)) return;
 
@@ -33,9 +33,29 @@ namespace Projekat1
             _kes.Add(key, stavka);
             Console.WriteLine("UPISANO U KES!\n");
             _kesLock.ExitWriteLock();
-            StampajSadrzajKesa();
+            StampajStavkuKesa(key);
+            //            StampajSadrzajKesa();
         }
+        public void StampajStavkuKesa(string Key)
+        {
+            _kesLock.EnterReadLock();
 
+            try
+            {
+                Stavka k = _kes[Key];
+                Console.WriteLine($"Kljuc je: {Key}, kreirano: {k.VremeKreiranja}, ima ukupno {k.Ukupno} podataka: {k.Podaci}, \n");
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                _kesLock.ExitReadLock();
+            }
+
+
+        }
         public void StampajSadrzajKesa()
         {
             _kesLock.EnterReadLock();
