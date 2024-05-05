@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-namespace Projekat1
 
+namespace Projekat1
 {
     internal class WebServer
     {
@@ -38,11 +38,11 @@ namespace Projekat1
                 string url;
                 if (Putanja.StartsWith(DozvoljenaPutanja))
                 {
-                     url = "https://collectionapi.metmuseum.org/public/collection/v1/search?q=" + Putanja.Substring(DozvoljenaPutanja.Length);
+                    url = "https://collectionapi.metmuseum.org/public/collection/v1/search?q=" + Putanja.Substring(DozvoljenaPutanja.Length);
                     Console.WriteLine(url);
                 }
                 else
-                throw new Exception("Lose navedena putanja");
+                    throw new Exception("Lose navedena putanja");
 
                 var rezultat = klijent.GetAsync(url).Result;
                 if (!rezultat.IsSuccessStatusCode)
@@ -51,8 +51,6 @@ namespace Projekat1
                 }
                 byte[] podaci = rezultat.Content.ReadAsByteArrayAsync().Result;
                 kes.DodajUKes(zahtev.Request.RawUrl.Substring(4), podaci, 10);
-
-
             }
             catch (Exception e)
             {
