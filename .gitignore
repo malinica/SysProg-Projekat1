@@ -3,4 +3,9 @@ bin/
 *.exe
 *.log
 .vs/
+Json.XML
+Json.DLL
+.png
+Projekat1/packages/Newtonsoft.Json.13.0.3/LICENSE.md
+Projekat1/packages/Newtonsoft.Json.13.0.3/README.md
 Projekat1/.vs/Projekat1/v17/DocumentLayout.json
