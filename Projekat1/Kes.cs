@@ -11,7 +11,7 @@ public class Kes
 {
     private readonly ReaderWriterLockSlim _kesLock; 
     private readonly Dictionary<string, FileAndDate> _kes;
-    private const int kesKapacitet = 100;
+    private const int kesKapacitet = 10;
 
     public Kes()
     {
@@ -35,6 +35,7 @@ public class Kes
         _kes.Add(key, fileAndDate);
         Console.WriteLine("UPISANO U KES\n");
         _kesLock.ExitWriteLock();
+        StampajSadrzajKesa();
     }
 
     public void StampajSadrzajKesa()
