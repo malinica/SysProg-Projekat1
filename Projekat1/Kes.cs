@@ -16,7 +16,7 @@ namespace Projekat1
             _kes = new Dictionary<string, Stavka>(kesKapacitet);
         }
 
-        public void DodajUKes(string key, string value, int timeout)
+        public void DodajUKes(string key, int ukupno1,string podaci1, int timeout)
         {
             if (!_kesLock.TryEnterWriteLock(timeout)) return;
 
@@ -26,8 +26,8 @@ namespace Projekat1
             }
             Stavka stavka = new Stavka()
             {
-                //Ukupno= 
-                Podaci = value,
+                Ukupno = ukupno1,
+                Podaci = podaci1,
                 VremeKreiranja = DateTime.UtcNow
             };
             _kes.Add(key, stavka);
@@ -44,7 +44,7 @@ namespace Projekat1
                 Console.WriteLine("Sadrzaj kesa:\n");
                 foreach (var k in _kes)
                 {
-                    Console.WriteLine($"Kljuc je: {k.Key} sa podacima: {k.Value.Podaci}, kreirano: {k.Value.VremeKreiranja}\n");  //treba i ukupno
+                    Console.WriteLine($"Kljuc je: {k.Key}, kreirano: {k.Value.VremeKreiranja}, ima ukupno {k.Value.Ukupno} podataka: {k.Value.Podaci}, \n");
                 }
             }
             finally
@@ -63,12 +63,12 @@ namespace Projekat1
             _kesLock.ExitReadLock();
         }
 
-        public byte[] CitajIzKesa(string key)
+        public Stavka CitajIzKesa(string key)
         {
             _kesLock.EnterReadLock();
             try
             {
-                return _kes[key].Podaci;
+                return _kes[key];
             }
             finally
             {

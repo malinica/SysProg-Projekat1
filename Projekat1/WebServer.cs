@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -49,8 +50,13 @@ namespace Projekat1
                 {
                     throw new Exception("Nije uspela pretraga");
                 }
-                byte[] podaci = rezultat.Content.ReadAsByteArrayAsync().Result;
-                kes.DodajUKes(zahtev.Request.RawUrl.Substring(4), podaci, 10);
+                string rezultatString = rezultat.Content.ReadAsStringAsync().Result;
+                JToken rezultatJSON = JToken.Parse(rezultatString);
+                int total = rezultatJSON["total"].Value<int>();
+                string objectIDs = string.Join(",", rezultatJSON["objectIDs"].Select(id => (int)id));
+
+
+                kes.DodajUKes(zahtev.Request.RawUrl.Substring(4), total,objectIDs, 10);
             }
             catch (Exception e)
             {
