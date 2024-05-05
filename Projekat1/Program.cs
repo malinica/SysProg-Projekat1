@@ -9,7 +9,14 @@ namespace Projekat1
     {
         static void Main(string[] args)
         {
+            WebServer server = new WebServer();
 
+            Console.WriteLine("WebServer pokrenut, osluskuje");
+            while (true)
+            {
+                var context = server.listener.GetContext();
+                server.OdgovoriNaZahtev(context);
+            }
         }
     }
 }

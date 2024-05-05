@@ -7,16 +7,20 @@
       "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\WebServer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:WebServer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|c:\\users\\marko\\desktop\\fakultet\\sysprog-projekat1\\projekat1\\kes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:kes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|c:\\users\\marko\\desktop\\fakultet\\sysprog-projekat1\\projekat1\\webserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:webserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\Projekat1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:Projekat1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|c:\\users\\marko\\desktop\\fakultet\\sysprog-projekat1\\projekat1\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\App.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{67E82DCE-6509-462E-A44A-2550364E41FF}|Projekat1.csproj|solutionrelative:App.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,24 +30,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
+              "Title": "Projekat1.csproj",
+              "DocumentMoniker": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\Projekat1.csproj",
+              "RelativeDocumentMoniker": "Projekat1.csproj",
+              "ToolTip": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\Projekat1.csproj",
+              "RelativeToolTip": "Projekat1.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-05-05T13:46:43.302Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "WebServer.cs",
               "DocumentMoniker": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\WebServer.cs",
               "RelativeDocumentMoniker": "WebServer.cs",
               "ToolTip": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\WebServer.cs",
               "RelativeToolTip": "WebServer.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAAQwCEAAAAAAAAA",
+              "ViewState": "AQIAACgAAAAAAAAAAAAowDoAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-05T12:07:38.61Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "App.config",
               "DocumentMoniker": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\App.config",
               "RelativeDocumentMoniker": "App.config",
@@ -51,18 +67,17 @@
               "RelativeToolTip": "App.config",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-05-05T11:54:30.915Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-05T11:54:30.915Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Kes.cs",
               "DocumentMoniker": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\Kes.cs",
               "RelativeDocumentMoniker": "Kes.cs",
               "ToolTip": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\Kes.cs",
               "RelativeToolTip": "Kes.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAAYwCUAAAAdAAAA",
+              "ViewState": "AQIAABoAAAAAAAAAAAAgwCUAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-04T23:17:34.587Z",
               "EditorCaption": ""
@@ -75,7 +90,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\Marko\\Desktop\\Fakultet\\SysProg-Projekat1\\Projekat1\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-04T23:09:52.948Z",
               "EditorCaption": ""
