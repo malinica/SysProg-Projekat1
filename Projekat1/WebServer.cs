@@ -25,6 +25,11 @@ namespace Projekat1
             listener.Prefixes
                     .Add(url);
             listener.Start();
+
+            while(true)
+            {
+                ThreadPool.QueueUserWorkItem((context)=> OdgovoriNaZahtev((HttpListenerContext)context), listener.GetContext());    
+            }
         }
 
         public void OdgovoriNaZahtev(HttpListenerContext zahtev)

@@ -10,7 +10,7 @@ namespace Projekat1
         {
             WebServer server = new WebServer();
 
-            Console.WriteLine("WebServer pokrenut, osluskuje...");
+            //Console.WriteLine("WebServer pokrenut, osluskuje...");
             while (true)
             {
                 var context = server.listener.GetContext();
