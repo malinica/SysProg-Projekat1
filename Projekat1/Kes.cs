@@ -6,35 +6,83 @@ namespace Projekat1
 {
     public class Kes
     {
-        private readonly ReaderWriterLockSlim _kesLock;
-        private readonly Dictionary<string, Stavka> _kes;
-        private const int kesKapacitet = 10;
-
+        private ReaderWriterLockSlim _kesLock;
+        private Dictionary<string, Stavka> _kes;
+        private const int kesKapacitet = 2;
+        private int mestoCitanja, mestoPisanja, trenutnoElemenata;
+        private string[] red;
         public Kes()
         {
             _kesLock = new ReaderWriterLockSlim();
             _kes = new Dictionary<string, Stavka>(kesKapacitet);
+            mestoCitanja = mestoPisanja = trenutnoElemenata = 0;
+            red = new string[kesKapacitet];
         }
 
         public void DodajUKes(string key, int ukupno1, string podaci1, int timeout)
         {
-            if (!_kesLock.TryEnterWriteLock(timeout)) return;
+            try
+            {
+                if (!_kesLock.TryEnterWriteLock(timeout))
+                    return;
+                if (_kes.ContainsKey(key))
+                    throw new Exception("Element je vec u kesu.\n");
+                Stavka stavka = new Stavka(ukupno1, podaci1);
 
-            if (_kes.ContainsKey(key))
-            {
-                throw new Exception("Element je vec u kesu.\n");
+
+                if (trenutnoElemenata != kesKapacitet)
+                {
+                    red[mestoPisanja] = key;
+                    mestoPisanja = (++mestoPisanja) % kesKapacitet;
+                trenutnoElemenata++;
+                }
+                else
+                {
+
+                    string kljucZaBrisanje = red[mestoCitanja];
+                    mestoPisanja = mestoCitanja++;
+                    red[mestoPisanja++] = key;
+                    mestoPisanja = mestoPisanja % kesKapacitet;
+                    mestoCitanja = mestoCitanja % kesKapacitet;
+                    _kes.Remove(kljucZaBrisanje);
+                }
+
+                _kes.Add(key, stavka);
+                foreach (var keys in _kes.Keys)
+                {
+                    Console.WriteLine($"Ključ u kesu: {keys} ");
+                }
+                if (trenutnoElemenata == kesKapacitet)
+                {
+                    int brojac = 0;
+                    while (brojac < kesKapacitet)
+                    {
+                        int asd = mestoCitanja + brojac;
+                        asd = asd % kesKapacitet;
+                        Console.WriteLine($"{red[asd]}");
+                        //                    Console.WriteLine($" {red[(mestoCitanja+brojac)%kesKapacitet]}");
+                        brojac++;
+                    }
+
+                    Console.WriteLine("\n\n");
+                }
+                else
+                {
+                    for (int i = mestoCitanja; i != mestoPisanja; i++)
+                        Console.WriteLine($"{red[(i % kesKapacitet)]}");
+                    Console.WriteLine("\n\n");
+                }
             }
-            Stavka stavka = new Stavka()
+            catch (Exception ex)
             {
-                Ukupno = ukupno1,
-                Podaci = podaci1,
-                VremeKreiranja = DateTime.UtcNow
-            };
-            _kes.Add(key, stavka);
-            Console.WriteLine("UPISANO U KES!\n");
-            _kesLock.ExitWriteLock();
-            StampajStavkuKesa(key);
-            //            StampajSadrzajKesa();
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _kesLock.ExitWriteLock();
+            }
+
+
         }
         public void StampajStavkuKesa(string Key)
         {
@@ -43,9 +91,9 @@ namespace Projekat1
             try
             {
                 Stavka k = _kes[Key];
-                Console.WriteLine($"Kljuc je: {Key}, kreirano: {k.VremeKreiranja}, ima ukupno {k.Ukupno} podataka: {k.Podaci}, \n");
+                Console.WriteLine($"Kljuc je: {Key}, {k.ToString()} \n");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -58,13 +106,13 @@ namespace Projekat1
         }
         public void StampajSadrzajKesa()
         {
-            _kesLock.EnterReadLock();
             try
             {
+                _kesLock.EnterReadLock();
                 Console.WriteLine("Sadrzaj kesa:\n");
                 foreach (var k in _kes)
                 {
-                    Console.WriteLine($"Kljuc je: {k.Key}, kreirano: {k.Value.VremeKreiranja}, ima ukupno {k.Value.Ukupno} podataka: {k.Value.Podaci}, \n");
+                    Console.WriteLine($"Kljuc je: {k.Key}, {k.ToString()} \n");
                 }
             }
             finally
@@ -75,12 +123,25 @@ namespace Projekat1
 
         public void ObrisiIzKesa(string key)
         {
-            _kesLock.EnterReadLock();
-            if (!_kes.Remove(key))
+            _kesLock.EnterWriteLock();
+            if (ImaKljuc(key) && trenutnoElemenata != 0)
             {
-                throw new Exception("Element ne postoji u kesu.");
+                for (int i = mestoCitanja; i < mestoPisanja - 1; i++)
+                {
+                    red[i] = red[i + 1];
+                }
+                red[mestoPisanja] = null;
+                trenutnoElemenata--;
+                _kes.Remove(key);
             }
-            _kesLock.ExitReadLock();
+            _kesLock.ExitWriteLock();
+        }
+        public void ObrisiCeoKes()
+        {
+            _kesLock.EnterWriteLock();
+            _kes.Clear();
+            trenutnoElemenata = mestoPisanja = mestoCitanja = 0;
+            _kesLock.ExitWriteLock();
         }
 
         public Stavka CitajIzKesa(string key)
@@ -98,18 +159,14 @@ namespace Projekat1
 
         public bool ImaKljuc(string key)
         {
+            _kesLock.EnterReadLock();
+            bool postoji;
             if (_kes.ContainsKey(key))
-            {
-                if (_kes[key].VremeKreiranja.AddMinutes(10) >= DateTime.UtcNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    ObrisiIzKesa(key);
-                }
-            }
-            return false;
+                postoji = true;
+            else
+                postoji = false;
+            _kesLock.ExitReadLock();
+            return postoji;
         }
     }
 
