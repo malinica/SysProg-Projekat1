@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -38,7 +39,6 @@ namespace Projekat1
                 }
                 else
                 {
-
                     string kljucZaBrisanje = red[mestoCitanja];
                     mestoPisanja = mestoCitanja++;
                     red[mestoPisanja++] = key;
@@ -52,6 +52,7 @@ namespace Projekat1
                 {
                     Console.WriteLine($"Ključ u kesu: {keys} ");
                 }
+
                 if (trenutnoElemenata == kesKapacitet)
                 {
                     int brojac = 0;
@@ -81,29 +82,26 @@ namespace Projekat1
             {
                 _kesLock.ExitWriteLock();
             }
-
-
         }
+
         public void StampajStavkuKesa(string Key)
         {
             _kesLock.EnterReadLock();
-
             try
             {
                 Stavka k = _kes[Key];
                 Console.WriteLine($"Kljuc je: {Key}, {k.ToString()} \n");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                Console.WriteLine(ex.Message);
             }
             finally
             {
                 _kesLock.ExitReadLock();
             }
-
-
         }
+
         public void StampajSadrzajKesa()
         {
             try
@@ -115,6 +113,10 @@ namespace Projekat1
                     Console.WriteLine($"Kljuc je: {k.Key}, {k.ToString()} \n");
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             finally
             {
                 _kesLock.ExitReadLock();
@@ -124,24 +126,45 @@ namespace Projekat1
         public void ObrisiIzKesa(string key)
         {
             _kesLock.EnterWriteLock();
-            if (ImaKljuc(key) && trenutnoElemenata != 0)
+            try
             {
-                for (int i = mestoCitanja; i < mestoPisanja - 1; i++)
+                if (ImaKljuc(key) && trenutnoElemenata != 0)
                 {
-                    red[i] = red[i + 1];
+                    for (int i = mestoCitanja; i < mestoPisanja - 1; i++)
+                    {
+                        red[i] = red[i + 1];
+                    }
+                    red[mestoPisanja] = null;
+                    trenutnoElemenata--;
+                    _kes.Remove(key);
                 }
-                red[mestoPisanja] = null;
-                trenutnoElemenata--;
-                _kes.Remove(key);
             }
-            _kesLock.ExitWriteLock();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            { 
+                _kesLock.ExitWriteLock();
+            }
         }
+
         public void ObrisiCeoKes()
         {
             _kesLock.EnterWriteLock();
-            _kes.Clear();
-            trenutnoElemenata = mestoPisanja = mestoCitanja = 0;
-            _kesLock.ExitWriteLock();
+            try
+            {
+                _kes.Clear();
+                trenutnoElemenata = mestoPisanja = mestoCitanja = 0;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _kesLock.ExitWriteLock();
+            }
         }
 
         public Stavka CitajIzKesa(string key)
@@ -150,6 +173,11 @@ namespace Projekat1
             try
             {
                 return _kes[key];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
             }
             finally
             {
@@ -160,13 +188,19 @@ namespace Projekat1
         public bool ImaKljuc(string key)
         {
             _kesLock.EnterReadLock();
-            bool postoji;
-            if (_kes.ContainsKey(key))
-                postoji = true;
-            else
-                postoji = false;
-            _kesLock.ExitReadLock();
-            return postoji;
+            try
+            {
+                return _kes.ContainsKey(key);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                _kesLock.ExitReadLock();
+            }
         }
     }
 
