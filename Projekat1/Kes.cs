@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -10,13 +9,13 @@ namespace Projekat1
         private ReaderWriterLockSlim _kesLock;
         private Dictionary<string, Stavka> _kes;
         private const int kesKapacitet = 2;
-        private int mestoCitanja, mestoPisanja, trenutnoElemenata;
+        private int mestoCitanja, mestoPisanja;
         private string[] red;
         public Kes()
         {
             _kesLock = new ReaderWriterLockSlim();
             _kes = new Dictionary<string, Stavka>(kesKapacitet);
-            mestoCitanja = mestoPisanja = trenutnoElemenata = 0;
+            mestoCitanja = mestoPisanja = 0;
             red = new string[kesKapacitet];
         }
 
@@ -31,11 +30,10 @@ namespace Projekat1
                 Stavka stavka = new Stavka(ukupno1, podaci1);
 
 
-                if (trenutnoElemenata != kesKapacitet)
+                if (_kes.Count != kesKapacitet)
                 {
                     red[mestoPisanja] = key;
                     mestoPisanja = (++mestoPisanja) % kesKapacitet;
-                trenutnoElemenata++;
                 }
                 else
                 {
@@ -46,33 +44,8 @@ namespace Projekat1
                     mestoCitanja = mestoCitanja % kesKapacitet;
                     _kes.Remove(kljucZaBrisanje);
                 }
-
                 _kes.Add(key, stavka);
-                foreach (var keys in _kes.Keys)
-                {
-                    Console.WriteLine($"Ključ u kesu: {keys} ");
-                }
-
-                if (trenutnoElemenata == kesKapacitet)
-                {
-                    int brojac = 0;
-                    while (brojac < kesKapacitet)
-                    {
-                        int asd = mestoCitanja + brojac;
-                        asd = asd % kesKapacitet;
-                        Console.WriteLine($"{red[asd]}");
-                        //                    Console.WriteLine($" {red[(mestoCitanja+brojac)%kesKapacitet]}");
-                        brojac++;
-                    }
-
-                    Console.WriteLine("\n\n");
-                }
-                else
-                {
-                    for (int i = mestoCitanja; i != mestoPisanja; i++)
-                        Console.WriteLine($"{red[(i % kesKapacitet)]}");
-                    Console.WriteLine("\n\n");
-                }
+                TrenutnoStanje();
             }
             catch (Exception ex)
             {
@@ -81,6 +54,32 @@ namespace Projekat1
             finally
             {
                 _kesLock.ExitWriteLock();
+            }
+        }
+        public void TrenutnoStanje()
+        {
+            Console.WriteLine("Kljucevi koji se nalaze u kesu su:");
+            foreach (var keys in _kes.Keys)
+            {
+                Console.WriteLine($" {keys} ");
+            }
+            Console.WriteLine("Redosled za izbacivanje iz kesa:");
+            if (_kes.Count == kesKapacitet)
+            {
+                int brojac = 0;
+                while (brojac < kesKapacitet)
+                {
+                    Console.WriteLine($"{brojac}. {red[(mestoCitanja + brojac) % kesKapacitet]}");
+                    brojac++;
+                }
+
+                Console.WriteLine("\n\n");
+            }
+            else
+            {
+                for (int i = 0; i != mestoPisanja; i++)
+                    Console.WriteLine($"{i}. {red[(i + mestoCitanja % kesKapacitet)]} \n");
+                Console.WriteLine("\n\n");
             }
         }
 
@@ -128,14 +127,13 @@ namespace Projekat1
             _kesLock.EnterWriteLock();
             try
             {
-                if (ImaKljuc(key) && trenutnoElemenata != 0)
+                if (ImaKljuc(key) && _kes.Count != 0)
                 {
                     for (int i = mestoCitanja; i < mestoPisanja - 1; i++)
                     {
                         red[i] = red[i + 1];
                     }
                     red[mestoPisanja] = null;
-                    trenutnoElemenata--;
                     _kes.Remove(key);
                 }
             }
@@ -144,7 +142,7 @@ namespace Projekat1
                 Console.WriteLine(ex.Message);
             }
             finally
-            { 
+            {
                 _kesLock.ExitWriteLock();
             }
         }
@@ -155,9 +153,9 @@ namespace Projekat1
             try
             {
                 _kes.Clear();
-                trenutnoElemenata = mestoPisanja = mestoCitanja = 0;
+                mestoPisanja = mestoCitanja = 0;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
