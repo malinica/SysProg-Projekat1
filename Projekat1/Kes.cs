@@ -45,7 +45,7 @@ namespace Projekat1
                     _kes.Remove(kljucZaBrisanje);
                 }
                 _kes.Add(key, stavka);
-                TrenutnoStanje();
+               // TrenutnoStanje();
             }
             catch (Exception ex)
             {
@@ -103,9 +103,9 @@ namespace Projekat1
 
         public void StampajSadrzajKesa()
         {
+                _kesLock.EnterReadLock();
             try
             {
-                _kesLock.EnterReadLock();
                 Console.WriteLine("Sadrzaj kesa:\n");
                 foreach (var k in _kes)
                 {
@@ -127,13 +127,13 @@ namespace Projekat1
             _kesLock.EnterWriteLock();
             try
             {
-                if (ImaKljuc(key) && _kes.Count != 0)
+                if (_kes.Count != 0 && ImaKljuc(key))
                 {
                     for (int i = mestoCitanja; i < mestoPisanja - 1; i++)
                     {
                         red[i] = red[i + 1];
                     }
-                    red[mestoPisanja] = null;
+                    red[mestoPisanja--] = null;
                     _kes.Remove(key);
                 }
             }
@@ -188,7 +188,10 @@ namespace Projekat1
             _kesLock.EnterReadLock();
             try
             {
-                return _kes.ContainsKey(key);
+                if (_kes.ContainsKey(key))
+                    return true;
+                else
+                    return false;
             }
             catch (Exception ex)
             {
