@@ -59,6 +59,7 @@ namespace Projekat1
             if (listener.IsListening)
             {
                 listener.Stop();
+                listener.Close();
                 osluskujNit.Join();
                 Console.WriteLine("Server je iskljucen ");
             }
@@ -174,6 +175,7 @@ namespace Projekat1
 
                                 break;
                             }
+
                         case "q":
                             q = keyValue[1];
                             break;
@@ -191,6 +193,10 @@ namespace Projekat1
                 }
             }
             string parametarPretrage = null;
+            if (departmentId != -1)
+            {
+                parametarPretrage += "depaetmentId=" + (departmentId.ToString()) + "&";
+            }
             if (isOnView != -1)
             {
                 parametarPretrage += "isOnView=" + (isOnView == 1) + "&";
@@ -216,8 +222,6 @@ namespace Projekat1
                 parametarPretrage = parametarPretrage.Substring(0, parametarPretrage.Length - 1);
             }
             return parametarPretrage;
-
-
         }
     }
 }
